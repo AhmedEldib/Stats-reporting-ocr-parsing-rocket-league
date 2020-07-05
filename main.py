@@ -13,7 +13,7 @@ pixels = im.load() # create the pixel map
 
 for i in range(im.size[0]):    # for every col:
     for j in range(im.size[1]):    # For every row
-        if pixels[i,j][0] > 127: # set the colour accordingly
+        if pixels[i,j][0] > 180: # set the colour accordingly
             pixels[i, j] = (255, 255, 255)
         else:
             pixels[i, j] = (0, 0, 0)
@@ -21,7 +21,7 @@ for i in range(im.size[0]):    # for every col:
 im.show()
 
 # Adding custom options
-custom_config = '--psm 7'
+custom_config = '--psm 4'
 
 x = pytesseract.image_to_string(im, config=custom_config)
 print(x)
