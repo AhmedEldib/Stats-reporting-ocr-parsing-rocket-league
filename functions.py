@@ -1,6 +1,7 @@
 import pyshorteners
 from prettytable import PrettyTable
 from crop import crop_stats
+from spreed_sheet import insert_stats, create_worksheet
 
 import pytesseract
 import os
@@ -41,7 +42,7 @@ def extract_stats_from_image(f):
 
     return prettydata
 
-def prettyfy_stats(data):
+def prettyfy_stats(data, worksheet, game_number):
     data = data.split(" ")
 
     score = data[0 : 3]
@@ -55,6 +56,9 @@ def prettyfy_stats(data):
     remove_alphabets(assists)
     remove_alphabets(saves)
     remove_alphabets(shots)
+
+    #send the data to the spread sheet to be inserted
+    insert_stats(worksheet, game_number, score, goals, assists, saves, shots)
 
     table = PrettyTable()
     table.field_names = ["Score", "Goals", "Assists", "Save", 'Shots']
@@ -85,13 +89,19 @@ def remove_alphabets(arr):
         num = ""
     
 
-def get_stats(f):
+def get_stats(f, game_number, link):
+    #crop the stats out of the full image
     img1, img2 = crop_stats(f)
 
+    #extract the stats from the cropped images
     team_1_stats = extract_stats_from_image(img1)
     team_2_stats = extract_stats_from_image(img2)
 
-    team_1_stats = prettyfy_stats(team_1_stats)
-    team_2_stats = prettyfy_stats(team_2_stats)
+    #create the worksheet for the stats
+    ws = create_worksheet(link)
+
+    #remove any Alphabets that were read instead of zero
+    team_1_stats = prettyfy_stats(team_1_stats, ws, game_number)
+    team_2_stats = prettyfy_stats(team_2_stats, ws, game_number)
 
     return team_1_stats, team_2_stats
