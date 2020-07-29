@@ -10,4 +10,4 @@ import project_manager
 async def ظظ(ctx):
     await ctx.send('يعني انت عايز ايه ظظ')
 
-client.run('NzI5NDgxMDU2MDMzNTcwOTM2.XwJkbA.DLOLOmOWFc3g-KxjywwDNy84fF8')
+client.run('NzI5NDgxMDU2MDMzNTcwOTM2.XwJkLA.S3fDXKY_LR8IsVO-D3FfvGdlHqM')
