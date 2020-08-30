@@ -4,7 +4,7 @@ import re
 from spreed_sheet import create_worksheet
 
 spreedsheet_link = []
-spreedsheet_link.append("https://docs.google.com/spreadsheets/d/1KWGxBREobBzUo55vFaisM-tfX7IXXUOc8HLAwS09rNE/edit?usp=sharing")
+spreedsheet_link.append("ur Spreadsheet link here with edit permission")
 
 #*********************** rocket stats *************************
 @client.command(name = 'a')
@@ -52,4 +52,4 @@ async def s(ctx, *args):
 
 
     except:
-        await ctx.author.send("Couldn't Open Spreadsheet. Try giving access to this mail as an editor: \n ```stats-bot@rocket-stats-282622.iam.gserviceaccount.com``` ")
+        await ctx.author.send("Couldn't Open Spreadsheet. Try giving access to this mail as an editor: \n ```ur bot api link``` ")

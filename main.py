@@ -7,7 +7,7 @@ import project_manager
 #*********************** General Events & Commands *************************
 #***************************************************************************
 @client.command()
-async def ظظ(ctx):
-    await ctx.send('يعني انت عايز ايه ظظ')
+async def hi(ctx):
+    await ctx.send('Hello there!')
 
-client.run('NzI5NDgxMDU2MDMzNTcwOTM2.XwJkLA.S3fDXKY_LR8IsVO-D3FfvGdlHqM')
+client.run('Bot Token Here')
