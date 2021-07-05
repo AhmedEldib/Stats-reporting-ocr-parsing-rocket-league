@@ -34,6 +34,31 @@ async def a(ctx, *args):
         await ctx.channel.send('Invalid Image')
         return
 
+#######################################################################
+
+@client.event
+async def on_message(message):
+    if str(message.author.id) != '729481056033570936':
+
+        print(message.content)
+
+        try:
+            replay = functions.download_replay(message.attachments[0].url)
+            blue, orange = functions.parse_replay(replay)
+            await message.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+
+        except:
+            try:
+                replay = functions.download_replay(message.content)
+                blue, orange = functions.parse_replay(replay)
+                await message.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+
+            except:
+                print('not a valid replay')
+                return
+
+#######################################################################
+
 @client.command(name = 's')
 async def s(ctx, *args):
     try:

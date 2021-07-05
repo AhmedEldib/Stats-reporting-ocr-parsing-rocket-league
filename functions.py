@@ -8,11 +8,63 @@ import os
 import re
 import math
 from PIL import Image, ImageEnhance, ImageOps
-
+import carball
 
 import requests
 from io import BytesIO
 import numpy as np
+import pandas as pd
+from tabulate import tabulate
+
+#############################################################
+def download_replay(link):
+
+    response = requests.get(link)
+    open('r.replay', 'wb').write(response.content)
+
+    return 'r.replay'
+
+def parse_replay(replay):
+    j = carball.decompile_replay(replay)
+
+    data = pd.DataFrame(j["properties"]['PlayerStats'])
+
+    c = data.pop('Name')
+    data.insert(0, c.name, c)
+
+    c = data.pop('OnlineID')
+    data.insert(0, c.name, c)
+
+    c = data.pop('Goals')
+    data.insert(2, c.name, c)
+
+    c = data.pop('Score')
+    data.insert(2, c.name, c)
+
+    data.pop('Platform')
+    data.pop('bBot')
+
+    data['Team'] = data['Team'].apply(lambda x: 'O' if x == 1 else 'B')
+
+    blue = data[data['Team'] == 'B']
+
+    if len(blue) > 0:
+        blue = blue.set_index('Team').sort_values('Score', ascending=False).to_string(index=False)
+
+    else:
+        blue = 'Team Left Early'
+
+    
+    orange = data[data['Team'] == 'O']
+
+    if len(orange) > 0:
+        orange = orange.set_index('Team').sort_values('Score', ascending=False).to_string(index=False)
+
+    else:
+        orange = 'Team Left Early'
+
+    return(blue, orange)
+################################################################
 
 def download_image(link):
 

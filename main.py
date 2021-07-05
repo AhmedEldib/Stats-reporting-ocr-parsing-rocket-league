@@ -1,6 +1,7 @@
 import bot_initialization
 from bot_initialization import client
 import project_manager
+import json
 
 #***************************************************************************
 #***************************************************************************
@@ -8,6 +9,6 @@ import project_manager
 #***************************************************************************
 @client.command()
 async def hi(ctx):
-    await ctx.send('Hello there!')
+    await ctx.send('ready')
 
-client.run('Bot Token Here')
+client.run(json.load(open("bot_creds.json"))["bot"])
