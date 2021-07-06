@@ -36,26 +36,30 @@ async def a(ctx, *args):
 
 #######################################################################
 
-@client.event
-async def on_message(message):
-    if str(message.author.id) != '729481056033570936':
+@client.command(name = 'r')
+async def r(ctx, *args):
 
-        print(message.content)
+    try:
+        link = args[0]
 
-        try:
-            replay = functions.download_replay(message.attachments[0].url)
-            blue, orange = functions.parse_replay(replay)
-            await message.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+    except:
+        await ctx.channel.send("Command missing the link or the Game ID")
+        return
 
-        except:
-            try:
-                replay = functions.download_replay(message.content)
-                blue, orange = functions.parse_replay(replay)
-                await message.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+    # try:
+    #     replay = functions.download_replay(message.attachments[0].url)
+    #     blue, orange = functions.parse_replay(replay)
+    #     await ctx.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
 
-            except:
-                print('not a valid replay')
-                return
+    # except:
+    try:
+        replay = functions.download_replay(link)
+        blue, orange = functions.parse_replay(replay)
+        await ctx.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+
+    except:
+        print('not a valid replay')
+        return
 
 #######################################################################
 
