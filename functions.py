@@ -18,7 +18,6 @@ from tabulate import tabulate
 
 #############################################################
 def download_replay(link):
-
     response = requests.get(link)
     open('r.replay', 'wb').write(response.content)
 
