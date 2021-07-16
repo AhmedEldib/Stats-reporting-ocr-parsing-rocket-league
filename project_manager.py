@@ -5,11 +5,15 @@ from spreed_sheet import create_worksheet
 import db_utils as db
 from pymongo.errors import DuplicateKeyError
 import sys
+import asyncio
+
 
 spreedsheet_link = []
 spreedsheet_link.append("ur Spreadsheet link here with edit permission")
 
 # *********************** rocket stats *************************
+
+
 @client.command(name='a')
 async def a(ctx, *args):
 
@@ -123,8 +127,16 @@ async def at(ctx, *args):
         print(sys.exc_info())
 
 #######################################################################
+
+
 @client.command(name='am')
 async def am(ctx, *args):
     db.insertMatch(args[2], args[3], args[0], args[1])
 
 #######################################################################
+@client.command(name='pID')
+async def pID(ctx, *args):
+    for id in args:
+        print(id)
+
+

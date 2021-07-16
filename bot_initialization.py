@@ -8,7 +8,3 @@ certificate = 'C:\\Users\\DELL\\Anaconda3\\lib\\site-packages\\certifi\\cacert.p
 client = commands.Bot(command_prefix=';')
 
 
-@client.event
-async def on_ready():
-    db.connect()
-    print('READY')

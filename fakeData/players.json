@@ -1,0 +1,46 @@
+{
+   "players":[
+     {
+        "_id": "295678585182617610",
+        "name": "hotfire",
+        "mobile_number": "01025230734",
+        "rank": 1,
+        "rocket_id": "xKazBlanca"
+     },
+     {
+        "_id": "335753136302194688",
+        "name": "Karim Benzema",
+        "mobile_number": "01025223734",
+        "rank": 1,
+        "rocket_id": "TheOutsider25"
+     },
+     {
+        "_id": "519925537058193443",
+        "name": "Szczurke (Jacob)",
+        "mobile_number": "01025130734",
+        "rank": 1,
+        "rocket_id": "Szczurke"
+     },
+    {
+        "_id": "180006937612517376",
+        "name": "shad0w",
+        "mobile_number": "01025232474",
+        "rank": 1,
+        "rocket_id": "shad0w"
+    },
+    {
+        "_id": "639832596330709051",
+        "name": "Sniiki_",
+        "mobile_number": "01025321734",
+        "rank": 1,
+        "rocket_id": "Sniiki_"
+    },
+    {
+        "_id": "629938481539579923",
+        "name": "Kn0xX_RL",
+        "mobile_number": "01234230734",
+        "rank": 1,
+        "rocket_id": "Kn0xX_RL"
+    }
+   ]
+}

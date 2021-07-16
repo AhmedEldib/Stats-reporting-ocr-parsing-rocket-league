@@ -12,6 +12,21 @@ def connect():
 
 myDB = connect()
 
+def initializeDB():
+    players = json.load(open("fakeData/players.json"))["players"]
+    teams = json.load(open("fakeData/teams.json"))["teams"]
+    matches = json.load(open("fakeData/matches.json"))["matches"]
+    for player in players:
+        insertNewPlayer(player['_id'], player['name'],
+                        player['mobile_number'], player['rank'], player['rocket_id'])
+    for team in teams:
+        insertTeam(team['_id'], team['captain'],
+                   team['player_2'], team['player_3'])
+    
+    for match in matches:
+        insertMatch(match["date"], match["time"],
+                     match["team1"], match["team2"])
+
 
 def insertNewPlayer(discord_id, name, mobile_number, rank, rocket_id, online_id='$', total_score=0, total_games=0, total_goals=0, total_assists=0, total_saves=0, total_shots=0):
     doc = {'_id': discord_id, 'name': name, 'mobile_number': mobile_number, 'rank': int(rank), 'rocket_id': rocket_id, 'online_id': online_id, 'total_score': total_score,
