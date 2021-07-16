@@ -112,15 +112,19 @@ async def ap(ctx, *args):
 
 #######################################################################
 @client.command(name='at')
-async def am(ctx, *args):
+async def at(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
             r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]))
         await ctx.channel.send(args[0]+" is now a team")
     except DuplicateKeyError:
-        await ctx.channel.send("Team name is aldready taken or members in this team aldeady have a team")
+        await ctx.channel.send("Team name is already taken or members in this team already have a team")
+    except:
+        print(sys.exc_info())
 
 #######################################################################
 @client.command(name='am')
 async def am(ctx, *args):
     db.insertMatch(args[2], args[3], args[0], args[1])
+
+#######################################################################
