@@ -131,7 +131,8 @@ async def at(ctx, *args):
 
 @client.command(name='am')
 async def am(ctx, *args):
-    db.insertMatch(args[2], args[3], args[0], args[1])
+    matchID = db.insertMatch(args[2], args[3], args[0], args[1])
+    await ctx.channel.send("Match is created with ID:"+str(matchID))
 
 #######################################################################
 @client.command(name='pID')
@@ -140,3 +141,10 @@ async def pID(ctx, *args):
         print(id)
 
 
+#######################################################################
+@client.command(name='ar')
+async def ar(ctx, *args):
+    matchID = args[0]
+    replay = functions.download_replay(args[1])
+    blue, orange = functions.parse_replay(replay)
+    db.insertResult(matchID, blue, orange)

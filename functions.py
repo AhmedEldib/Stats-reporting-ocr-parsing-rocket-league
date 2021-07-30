@@ -48,7 +48,7 @@ def parse_replay(replay):
     blue = data[data['Team'] == 'B']
 
     if len(blue) > 0:
-        blue = blue.set_index('Team').sort_values('Score', ascending=False).to_string(index=False)
+        blue = blue.set_index('Team').sort_values('Score', ascending=False)#.to_string(index=False)
 
     else:
         blue = 'Team Left Early'
@@ -57,7 +57,7 @@ def parse_replay(replay):
     orange = data[data['Team'] == 'O']
 
     if len(orange) > 0:
-        orange = orange.set_index('Team').sort_values('Score', ascending=False).to_string(index=False)
+        orange = orange.set_index('Team').sort_values('Score', ascending=False)#.to_string(index=False)
 
     else:
         orange = 'Team Left Early'

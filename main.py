@@ -10,10 +10,11 @@ from datetime import datetime, timedelta
 import time
 import sched
 
-#***************************************************************************
-#***************************************************************************
-#*********************** General Events & Commands *************************
-#***************************************************************************
+# ***************************************************************************
+# ***************************************************************************
+# *********************** General Events & Commands *************************
+# ***************************************************************************
+
 
 @client.event
 async def on_ready():
@@ -43,6 +44,7 @@ async def on_ready():
 #         s.run()  # run the scheduler, will block the event loop
 
 
-#client.loop.create_task(time_check())
+# client.loop.create_task(time_check())
 #db.initializeDB()
+#db.insertResult("60f19dd5597abc3621cc7aed", None, None)
 client.run(json.load(open("bot_creds.json"))["bot"])
