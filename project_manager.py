@@ -8,44 +8,44 @@ import sys
 import asyncio
 
 
-spreedsheet_link = []
-spreedsheet_link.append("ur Spreadsheet link here with edit permission")
+# spreedsheet_link = []
+# spreedsheet_link.append("ur Spreadsheet link here with edit permission")
 
 # *********************** rocket stats *************************
 
 
-@client.command(name='a')
-async def a(ctx, *args):
+# @client.command(name='a')
+# async def a(ctx, *args):
 
-    try:
-        game_number = args[0]
-        link = args[1]
+#     try:
+#         game_number = args[0]
+#         link = args[1]
 
-    except:
-        await ctx.channel.send("Command missing the link or the Game ID")
-        return
+#     except:
+#         await ctx.channel.send("Command missing the link or the Game ID")
+#         return
 
-    # try:
-    #     img = functions.download_image(message.attachments[0].url)
-    #     team_1, team_2 = functions.get_stats(img)
-    #     await message.channel.send("TEAM 1 \n" + "``` " + str(team_1) + " ``` \n" + "TEAM 2 \n" + "``` " + str(team_2) + " ```")
+#     # try:
+#     #     img = functions.download_image(message.attachments[0].url)
+#     #     team_1, team_2 = functions.get_stats(img)
+#     #     await message.channel.send("TEAM 1 \n" + "``` " + str(team_1) + " ``` \n" + "TEAM 2 \n" + "``` " + str(team_2) + " ```")
 
-    # except:
+#     # except:
 
-    try:
-        img = functions.download_image(link)
-        team_1, team_2 = functions.get_stats(
-            img, game_number, spreedsheet_link[0])
-        await ctx.channel.send("TEAM 1 \n" + "``` " + str(team_1) + " ``` \n" + "TEAM 2 \n" + "``` " + str(team_2) + " ```" + "\n The stats can be found here : " + spreedsheet_link[0])
+#     try:
+#         img = functions.download_image(link)
+#         team_1, team_2 = functions.get_stats(
+#             img, game_number, spreedsheet_link[0])
+#         await ctx.channel.send("TEAM 1 \n" + "``` " + str(team_1) + " ``` \n" + "TEAM 2 \n" + "``` " + str(team_2) + " ```" + "\n The stats can be found here : " + spreedsheet_link[0])
 
-    except:
-        await ctx.channel.send('Invalid Image')
-        return
+#     except:
+#         await ctx.channel.send('Invalid Image')
+#         return
 
 #######################################################################
 
 
-@client.command(name='r')
+@client.command(name='replay')
 async def r(ctx, *args):
 
     try:
@@ -73,28 +73,28 @@ async def r(ctx, *args):
 #######################################################################
 
 
-@client.command(name='s')
-async def s(ctx, *args):
-    try:
-        if len(args) == 0:
-            raise("No Link")
+# @client.command(name='s')
+# async def s(ctx, *args):
+#     try:
+#         if len(args) == 0:
+#             raise("No Link")
 
-    except:
-        await ctx.channel.send("Pls insert a Spreadsheet link")
-        return
+#     except:
+#         await ctx.channel.send("Pls insert a Spreadsheet link")
+#         return
 
-    try:
-        create_worksheet(args[0])
-        spreedsheet_link[0] = args[0]
+#     try:
+#         create_worksheet(args[0])
+#         spreedsheet_link[0] = args[0]
 
-        await ctx.channel.send("Switched to the new SpreadSheet")
+#         await ctx.channel.send("Switched to the new SpreadSheet")
 
-    except:
-        await ctx.author.send("Couldn't Open Spreadsheet. Try giving access to this mail as an editor: \n ```ur bot api link``` ")
+#     except:
+#         await ctx.author.send("Couldn't Open Spreadsheet. Try giving access to this mail as an editor: \n ```ur bot api link``` ")
 
 
 #######################################################################
-@client.command(name='ap')
+@client.command(name='player')
 async def ap(ctx, *args):
     player = ''
     try:
@@ -115,7 +115,7 @@ async def ap(ctx, *args):
 
 
 #######################################################################
-@client.command(name='at')
+@client.command(name='team')
 async def at(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
@@ -129,20 +129,20 @@ async def at(ctx, *args):
 #######################################################################
 
 
-@client.command(name='am')
+@client.command(name='match')
 async def am(ctx, *args):
-    matchID = db.insertMatch(args[2], args[3], args[0], args[1])
+    team1 = {'name': args[0], 'who': [args[1], args[2], args[3]]}
+    team2 = {'name': args[4], 'who': [args[5], args[6], args[7]]}
+    matchID = db.insertMatch(args[8], args[9], team1, team2)
     await ctx.channel.send("Match is created with ID:"+str(matchID))
 
 #######################################################################
-@client.command(name='pID')
-async def pID(ctx, *args):
-    for id in args:
-        print(id)
-
-
+# @client.command(name='pID')
+# async def pID(ctx, *args):
+#     for id in args:
+#         print(id)
 #######################################################################
-@client.command(name='ar')
+@client.command(name='result')
 async def ar(ctx, *args):
     matchID = args[0]
     replay = functions.download_replay(args[1])
