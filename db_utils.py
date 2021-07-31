@@ -3,7 +3,7 @@ import pymongo
 import datetime
 from bson.objectid import ObjectId
 import uuid
-
+import pandas as pd
 
 def connect():
     from pymongo import MongoClient
@@ -70,7 +70,13 @@ def insertMatch(date, time, team1, team2):
         matchID = uuid.uuid4().hex
         isNewID = myDB['matches'].find_one({'_id': matchID}) is None
     doc = {"_id": matchID, 'played': 0, 'date': date_time, 'team1': team1,
-           'team2': team2, 'team1_goals': 0, 'team2_goals': 0, 'player1_id': team1_players[team1['who'][0]], 'player1_score': 0, 'player1_goals': 0, 'player1_assists': 0, 'player1_shots': 0, 'player1_saves': 0, 'player2_id': team1_players[team1['who'][1]], 'player2_score': 0, 'player2_goals': 0, 'player2_assists': 0, 'player2_shots': 0, 'player2_saves': 0, 'player3_id': team1_players[team1['who'][2]], 'player3_score': 0, 'player3_goals': 0, 'player3_assists': 0, 'player3_shots': 0, 'player3_saves': 0, 'player4_id': team2_players[team2['who'][0]], 'player4_score': 0, 'player4_goals': 0, 'player4_assists': 0, 'player4_shots': 0, 'player4_saves': 0, 'player5_id': team2_players[team2['who'][1]], 'player5_score': 0, 'player5_goals': 0, 'player5_assists': 0, 'player5_shots': 0, 'player5_saves': 0, 'player6_id': team2_players[team2['who'][2]], 'player6_score': 0, 'player6_goals': 0, 'player6_assists': 0, 'player6_shots': 0, 'player6_saves': 0}
+           'team2': team2, 'team1_goals': 0, 'team2_goals': 0, 
+           'player1_id': team1_players[team1['who'][0]], 'player1_score': 0, 'player1_goals': 0, 'player1_assists': 0, 'player1_shots': 0, 'player1_saves': 0, 
+           'player2_id': team1_players[team1['who'][1]], 'player2_score': 0, 'player2_goals': 0, 'player2_assists': 0, 'player2_shots': 0, 'player2_saves': 0, 
+           'player3_id': team1_players[team1['who'][2]], 'player3_score': 0, 'player3_goals': 0, 'player3_assists': 0, 'player3_shots': 0, 'player3_saves': 0, 
+           'player4_id': team2_players[team2['who'][0]], 'player4_score': 0, 'player4_goals': 0, 'player4_assists': 0, 'player4_shots': 0, 'player4_saves': 0, 
+           'player5_id': team2_players[team2['who'][1]], 'player5_score': 0, 'player5_goals': 0, 'player5_assists': 0, 'player5_shots': 0, 'player5_saves': 0, 
+           'player6_id': team2_players[team2['who'][2]], 'player6_score': 0, 'player6_goals': 0, 'player6_assists': 0, 'player6_shots': 0, 'player6_saves': 0}
 
     current_collection = myDB['matches']
     current_collection.insert(doc)
@@ -127,6 +133,10 @@ def insertResult(matchID, team1, team2):
 
     matchDictionary['team1_goals'] = team1_goals
     matchDictionary['team2_goals'] = team2_goals
+    matchDictionary['played'] = 1
 
     matchCollection.update({"_id": matchDictionary['_id']}, {
         '$set': matchDictionary}, upsert=False)
+
+def exctractDataFrames():
+    return pd.DataFrame(list(myDB['players'].find())), pd.DataFrame(list(myDB['teams'].find())),pd.DataFrame(list(myDB['matches'].find()))

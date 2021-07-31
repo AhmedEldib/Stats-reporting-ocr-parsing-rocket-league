@@ -64,7 +64,8 @@ async def r(ctx, *args):
     try:
         replay = functions.download_replay(link)
         blue, orange = functions.parse_replay(replay)
-        await ctx.channel.send("Blue Team \n" + "``` " + blue + " ``` \n" + "Orange Team \n" + "``` " + orange + " ```")
+        await ctx.channel.send("Blue Team \n" + "``` " + blue.to_string(index=False) + " ``` \n" + "Orange Team \n" 
+                                + "``` " + orange.to_string(index=False) + " ```")
 
     except:
         print('not a valid replay')
@@ -107,9 +108,9 @@ async def ap(ctx, *args):
             player = re.sub(r'[<@!>]', '', args[0])
             db.insertNewPlayer(player,
                                args[1], args[2], args[3], args[4])
-            await ctx.channel.send("<@!"+str(player)+">"+" is now a player")
+            await ctx.channel.send("<@!" + str(player) + ">" + " is now a player")
     except DuplicateKeyError:
-        await ctx.channel.send("Player "+ctx.message.author.mention+" already registered")
+        await ctx.channel.send("Player " + ctx.message.author.mention + " already registered")
     except:
         print(sys.exc_info())
 
@@ -119,7 +120,7 @@ async def ap(ctx, *args):
 async def at(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
-            r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]))
+            r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]),re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
         await ctx.channel.send(args[0]+" is now a team")
     except DuplicateKeyError:
         await ctx.channel.send("Team name is already taken or members in this team already have a team")
@@ -131,9 +132,14 @@ async def at(ctx, *args):
 
 @client.command(name='match')
 async def am(ctx, *args):
-    team1 = {'name': args[0], 'who': [args[1], args[2], args[3]]}
-    team2 = {'name': args[4], 'who': [args[5], args[6], args[7]]}
-    matchID = db.insertMatch(args[8], args[9], team1, team2)
+    if len(args) == 10:
+        team1 = {'name': args[0], 'who': [args[1], args[2], args[3]]}
+        team2 = {'name': args[4], 'who': [args[5], args[6], args[7]]}
+        matchID = db.insertMatch(args[8], args[9], team1, team2)
+    else:
+        team1 = {'name': args[0], 'who': ['captain','player2','player3']}
+        team2 = {'name': args[1], 'who': ['captain','player2','player3']}
+        matchID = db.insertMatch(args[2], args[3], team1, team2)
     await ctx.channel.send("Match is created with ID:"+str(matchID))
 
 #######################################################################
@@ -148,3 +154,13 @@ async def ar(ctx, *args):
     replay = functions.download_replay(args[1])
     blue, orange = functions.parse_replay(replay)
     db.insertResult(matchID, blue, orange)
+
+#######################################################################
+@client.command(name='stats')
+async def stats(ctx, *args):
+    players,teams,matches = db.exctractDataFrames()
+    players.to_csv('players.csv')
+    teams.to_csv('teams.csv')
+    matches.to_csv('matches.csv')
+
+#######################################################################
