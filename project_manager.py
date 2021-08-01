@@ -120,7 +120,7 @@ async def add_player(ctx, *args):
 async def add_team(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
-            r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]), re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
+            r'[<@!>]', '', args[2]) if len(args) == 3 else None, re.sub(r'[<@!>]', '', args[3]) if len(args) == 4 else None, re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
         await ctx.channel.send(args[0]+" is now a team")
     except DuplicateKeyError:
         await ctx.channel.send("Team name is already taken or members in this team already have a team")
@@ -128,8 +128,22 @@ async def add_team(ctx, *args):
         print(sys.exc_info())
 
 #######################################################################
-
-
+@client.command(name='join')
+async def join_team(ctx, *args):
+    try:
+        db.joinTeam(args[0], re.sub(r'[<@!>]', '', args[1]), args[2])
+        await ctx.channel.send(args[1]+" is now "+args[0]+' member')
+    except:
+        print(sys.exc_info())
+#######################################################################
+@client.command(name='kick')
+async def kick_team(ctx, *args):
+    try:
+        db.deleteMember(args[0], re.sub(r'[<@!>]', '', args[1]))
+        await ctx.channel.send(args[1]+" is kicked from "+args[0])
+    except:
+        print(sys.exc_info())
+#######################################################################
 @client.command(name='match')
 async def add_match(ctx, *args):
     if len(args) == 10:
@@ -181,6 +195,6 @@ async def stats(ctx, *args):
     teams = list(df['Team'].unique())
     await ctx.channel.send('Series: '+str(teams[0]) + ' vs ' + str(teams[1]) + ' on: ' + str(date.day) + '/' + str(date.month) + ' ' + str(date.hour) + ':' + str(date.minute))
     for match in df['Game number'].unique():
-        await ctx.channel.send('Match #'+str(match))
+        await ctx.channel.send('Game #'+str(match))
         await ctx.channel.send("```" + df[df['Game number'] == match].drop('Game number', axis=1).set_index('Player').to_string() + "```")
 #######################################################################

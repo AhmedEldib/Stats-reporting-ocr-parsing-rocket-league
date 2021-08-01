@@ -47,7 +47,7 @@ def insertNewPlayer(discord_id, name, mobile_number, rank, rocket_id, tracker_li
     current_collection.insert(doc)
 
 
-def insertTeam(teamName, captain, player_2, player_3, sub=None):
+def insertTeam(teamName, captain, player_2=None, player_3=None, sub=None):
     doc = {'_id': teamName, 'captain': captain,
            'player2': player_2, 'player3': player_3, 'sub': sub}
 
@@ -56,6 +56,24 @@ def insertTeam(teamName, captain, player_2, player_3, sub=None):
         [("captain", pymongo.DESCENDING), ("player2", pymongo.DESCENDING), ("player3", pymongo.DESCENDING)], unique=True)
 
     current_collection.insert(doc)
+
+
+def joinTeam(teamName, player, role):
+    teamDictionary = myDB['teams'].find_one({'_id': teamName})
+    teamDictionary[role] = player
+
+    myDB['teams'].update({"_id": teamDictionary['_id']}, {
+        '$set': teamDictionary}, upsert=False)
+
+
+def deleteMember(teamName, player):
+    teamDictionary = myDB['teams'].find_one({'_id': teamName})
+    #currentPlayer = myDB['players'].find_one({'_id': player})['name']
+    for key, value in teamDictionary.items():
+        if value == player:
+            teamDictionary[key] = None
+    myDB['teams'].update({"_id": teamDictionary['_id']}, {
+        '$set': teamDictionary}, upsert=False)
 
 
 def insertMatch(date, time, team1, team2):
