@@ -23,28 +23,6 @@ async def on_ready():
 
 #######################################################################
 
-# async def time_check():
-#     await client.wait_until_ready()
-#     while not client.is_closed():
-#         channel = client.get_channel(726075186474123306)
-#         f = '%H:%M'
-
-#         alarm_time = '16:45'
-
-#         now = datetime.strftime(datetime.now(), f)
-#         # get the difference between the alarm time and now
-#         diff = (datetime.strptime(alarm_time, f) -
-#                 datetime.strptime(now, f)).total_seconds()
-
-#         # create a scheduler
-#         s = sched.scheduler(time.perf_counter, time.sleep)
-#         # enter the command and arguments into the scheduler
-#         args = (await channel.send(diff), )
-#         s.enter(5, 1, client.loop.create_task, args)
-#         s.run()  # run the scheduler, will block the event loop
-
-
-# client.loop.create_task(time_check())
 #db.initializeDB()
 #db.insertResult("60f19dd5597abc3621cc7aed", None, None)
 client.run(json.load(open("bot_creds.json"))["bot"])

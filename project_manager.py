@@ -11,7 +11,7 @@ import asyncio
 # spreedsheet_link = []
 # spreedsheet_link.append("ur Spreadsheet link here with edit permission")
 
-# *********************** rocket stats *************************
+# *********************** rocket stats OCR*************************
 
 
 # @client.command(name='a')
@@ -46,7 +46,7 @@ import asyncio
 
 
 @client.command(name='replay')
-async def r(ctx, *args):
+async def parse_replay(ctx, *args):
 
     try:
         link = args[0]
@@ -96,18 +96,18 @@ async def r(ctx, *args):
 
 #######################################################################
 @client.command(name='player')
-async def ap(ctx, *args):
+async def add_player(ctx, *args):
     player = ''
     try:
-        if len(args) == 4:
+        if len(args) == 5:
             player = ctx.message.author.id
             db.insertNewPlayer(ctx.message.author.id,
-                               args[0], args[1], args[2], args[3])
+                               args[0], args[1], args[2], args[3], args[4])
             await ctx.channel.send(ctx.message.author.mention + " is now a player")
-        elif len(args) == 5:
+        elif len(args) == 6:
             player = re.sub(r'[<@!>]', '', args[0])
             db.insertNewPlayer(player,
-                               args[1], args[2], args[3], args[4])
+                               args[1], args[2], args[3], args[4], args[5])
             await ctx.channel.send("<@!" + str(player) + ">" + " is now a player")
     except DuplicateKeyError:
         await ctx.channel.send("Player " + ctx.message.author.mention + " already registered")
@@ -117,7 +117,7 @@ async def ap(ctx, *args):
 
 #######################################################################
 @client.command(name='team')
-async def at(ctx, *args):
+async def add_team(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
             r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]),re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
@@ -131,7 +131,7 @@ async def at(ctx, *args):
 
 
 @client.command(name='match')
-async def am(ctx, *args):
+async def add_match(ctx, *args):
     if len(args) == 10:
         team1 = {'name': args[0], 'who': [args[1], args[2], args[3]]}
         team2 = {'name': args[4], 'who': [args[5], args[6], args[7]]}
@@ -149,7 +149,7 @@ async def am(ctx, *args):
 #         print(id)
 #######################################################################
 @client.command(name='result')
-async def ar(ctx, *args):
+async def get_result(ctx, *args):
     matchID = args[0]
     replay = functions.download_replay(args[1])
     blue, orange = functions.parse_replay(replay)
