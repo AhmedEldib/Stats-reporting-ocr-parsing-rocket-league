@@ -4,6 +4,8 @@ import datetime
 from bson.objectid import ObjectId
 import uuid
 import pandas as pd
+import numpy as np
+
 
 def connect():
     from pymongo import MongoClient
@@ -32,9 +34,9 @@ def initializeDB():
 
 
 def insertNewPlayer(discord_id, name, mobile_number, rank, rocket_id, tracker_link="", online_id='$', total_score=0, total_games=0, total_goals=0, total_assists=0, total_saves=0, total_shots=0):
-    doc = {'_id': discord_id, 'name': name, 'mobile_number': mobile_number, 'rank': int(rank), 
-            'rocket_id': rocket_id, 'tracker_link': tracker_link, 'online_id': online_id, 'total_score': total_score,
-            'total_games': total_games, 'total_goals': total_goals, 'total_assists': total_assists, 'total_saves': total_saves, 'total_shots': total_shots}
+    doc = {'_id': discord_id, 'name': name, 'mobile_number': mobile_number, 'rank': int(rank),
+           'rocket_id': rocket_id, 'tracker_link': tracker_link, 'online_id': online_id, 'total_score': total_score,
+           'total_games': total_games, 'total_goals': total_goals, 'total_assists': total_assists, 'total_saves': total_saves, 'total_shots': total_shots}
 
     current_collection = myDB['players']
     current_collection.create_index(
@@ -71,13 +73,13 @@ def insertMatch(date, time, team1, team2):
         matchID = uuid.uuid4().hex
         isNewID = myDB['matches'].find_one({'_id': matchID}) is None
     doc = {"_id": matchID, 'played': 0, 'date': date_time, 'team1': team1,
-           'team2': team2, 'team1_goals': 0, 'team2_goals': 0, 
-           'player1_id': team1_players[team1['who'][0]], 'player1_score': 0, 'player1_goals': 0, 'player1_assists': 0, 'player1_shots': 0, 'player1_saves': 0, 
-           'player2_id': team1_players[team1['who'][1]], 'player2_score': 0, 'player2_goals': 0, 'player2_assists': 0, 'player2_shots': 0, 'player2_saves': 0, 
-           'player3_id': team1_players[team1['who'][2]], 'player3_score': 0, 'player3_goals': 0, 'player3_assists': 0, 'player3_shots': 0, 'player3_saves': 0, 
-           'player4_id': team2_players[team2['who'][0]], 'player4_score': 0, 'player4_goals': 0, 'player4_assists': 0, 'player4_shots': 0, 'player4_saves': 0, 
-           'player5_id': team2_players[team2['who'][1]], 'player5_score': 0, 'player5_goals': 0, 'player5_assists': 0, 'player5_shots': 0, 'player5_saves': 0, 
-           'player6_id': team2_players[team2['who'][2]], 'player6_score': 0, 'player6_goals': 0, 'player6_assists': 0, 'player6_shots': 0, 'player6_saves': 0}
+           'team2': team2, 'team1_goals': [], 'team2_goals': [],
+           'player1_id': team1_players[team1['who'][0]], 'player1_score': [], 'player1_goals': [], 'player1_assists': [], 'player1_shots': [], 'player1_saves': [],
+           'player2_id': team1_players[team1['who'][1]], 'player2_score': [], 'player2_goals': [], 'player2_assists': [], 'player2_shots': [], 'player2_saves': [],
+           'player3_id': team1_players[team1['who'][2]], 'player3_score': [], 'player3_goals': [], 'player3_assists': [], 'player3_shots': [], 'player3_saves': [],
+           'player4_id': team2_players[team2['who'][0]], 'player4_score': [], 'player4_goals': [], 'player4_assists': [], 'player4_shots': [], 'player4_saves': [],
+           'player5_id': team2_players[team2['who'][1]], 'player5_score': [], 'player5_goals': [], 'player5_assists': [], 'player5_shots': [], 'player5_saves': [],
+           'player6_id': team2_players[team2['who'][2]], 'player6_score': [], 'player6_goals': [], 'player6_assists': [], 'player6_shots': [], 'player6_saves': []}
 
     current_collection = myDB['matches']
     current_collection.insert(doc)
@@ -95,49 +97,114 @@ def insertResult(matchID, team1, team2):
 
     for i in range(1, 7):
         # Getting player info
-        currentPlayerID = matchDictionary['player'+str(i)+'_id']
-        currentPlayer = playerCollection.find_one({'_id': currentPlayerID})
         currentTeam = team1 if i < 4 else team2
+        currentPlayerID = matchDictionary['player'+str(i)+'_id']
+        currentPlayer = playerCollection.find_one(
+            {'_id': currentPlayerID})
         currentPlayerStats = currentTeam[currentTeam['Name']
                                          == currentPlayer['name']].values[0]
-
         # Updating player info
         if currentPlayer['online_id'] == '$':
             currentPlayer['online_id'] = currentPlayerStats[statsDictionary['OnlineID']]
 
-        # currentPlayer['total_score'] += currentPlayerStats[statsDictionary['Score']]
-        # currentPlayer['total_goals'] += currentPlayerStats[statsDictionary['Goals']]
-        # currentPlayer['total_assists'] += currentPlayerStats[statsDictionary['Assists']]
-        # currentPlayer['total_saves'] += currentPlayerStats[statsDictionary['Saves']]
-        # currentPlayer['total_shots'] += currentPlayerStats[statsDictionary['Shots']]
-        # currentPlayer['total_games'] += 1
-
-        # playerCollection.update({"_id": currentPlayer['_id']}, {
-        #                         '$set': currentPlayer}, upsert=False)
+        playerCollection.update({"_id": currentPlayer['_id']}, {
+                                '$set': currentPlayer}, upsert=False)
 
         # Updating match info
         matchDictionary['player' +
-                        str(i)+'_score'] = currentPlayerStats[statsDictionary['Score']]
+                        str(i)+'_score'].append(currentPlayerStats[statsDictionary['Score']])
         matchDictionary['player' +
-                        str(i)+'_goals'] = currentPlayerStats[statsDictionary['Goals']]
+                        str(i)+'_goals'].append(currentPlayerStats[statsDictionary['Goals']])
         matchDictionary['player' +
-                        str(i)+'_assists'] = currentPlayerStats[statsDictionary['Assists']]
+                        str(i)+'_assists'].append(currentPlayerStats[statsDictionary['Assists']])
         matchDictionary['player' +
-                        str(i)+'_shots'] = currentPlayerStats[statsDictionary['Shots']]
+                        str(i)+'_shots'].append(currentPlayerStats[statsDictionary['Shots']])
         matchDictionary['player' +
-                        str(i)+'_saves'] = currentPlayerStats[statsDictionary['Saves']]
+                        str(i)+'_saves'].append(currentPlayerStats[statsDictionary['Saves']])
 
         team1_goals += currentPlayerStats[statsDictionary['Goals']
                                           ] if i < 4 else 0
         team2_goals += currentPlayerStats[statsDictionary['Goals']
                                           ] if i >= 4 else 0
 
-    matchDictionary['team1_goals'] = team1_goals
-    matchDictionary['team2_goals'] = team2_goals
-    matchDictionary['played'] = 1
+    matchDictionary['team1_goals'].append(team1_goals)
+    matchDictionary['team2_goals'].append(team2_goals)
+    matchDictionary['played'] += 1
 
     matchCollection.update({"_id": matchDictionary['_id']}, {
         '$set': matchDictionary}, upsert=False)
 
+
 def exctractDataFrames():
-    return pd.DataFrame(list(myDB['players'].find())), pd.DataFrame(list(myDB['teams'].find())),pd.DataFrame(list(myDB['matches'].find()))
+    return pd.DataFrame(list(myDB['players'].find())), pd.DataFrame(list(myDB['teams'].find())), pd.DataFrame(list(myDB['matches'].find()))
+
+
+def removeLastReplay(matchID):
+    matchCollection = myDB['matches']
+    matchDictionary = matchCollection.find_one({"_id": matchID})
+
+    for key, value in matchDictionary.items():
+        if type(value) == type([None, None]):
+            del matchDictionary[key][-1]
+
+    matchDictionary['played'] -= 1
+    matchCollection.update({"_id": matchDictionary['_id']}, {
+        '$set': matchDictionary}, upsert=False)
+
+
+def commitSeries(matchID):
+    statsArray = ['score', 'goals', 'assists', 'saves', 'shots']
+    playerCollection = myDB['players']
+    matchCollection = myDB['matches']
+
+    for i in range(1, 7):
+        # Getting player info
+        matchDictionary = matchCollection.find_one({"_id": matchID})
+        currentPlayerID = matchDictionary['player'+str(i)+'_id']
+        currentPlayer = playerCollection.find_one(
+            {'_id': currentPlayerID})
+        # Updating player info
+        for stat in statsArray:
+            currentPlayerstat = matchDictionary['player'+str(i)+'_'+stat]
+            currentPlayer['total_'+stat] += int(np.sum(currentPlayerstat))
+        currentPlayer['total_games'] += matchDictionary['played']
+        playerCollection.update({"_id": currentPlayer['_id']}, {
+                                '$set': currentPlayer}, upsert=False)
+
+
+def uncommitSeries(matchID):
+    statsArray = ['score', 'goals', 'assists', 'saves', 'shots']
+    playerCollection = myDB['players']
+    matchCollection = myDB['matches']
+
+    for i in range(1, 7):
+        # Getting player info
+        matchDictionary = matchCollection.find_one({"_id": matchID})
+        currentPlayerID = matchDictionary['player'+str(i)+'_id']
+        currentPlayer = playerCollection.find_one(
+            {'_id': currentPlayerID})
+        # Updating player info
+        for stat in statsArray:
+            currentPlayerstat = matchDictionary['player'+str(i)+'_'+stat]
+            currentPlayer['total_'+stat] -= int(np.sum(currentPlayerstat))
+        currentPlayer['total_games'] -= matchDictionary['played']
+        playerCollection.update({"_id": currentPlayer['_id']}, {
+                                '$set': currentPlayer}, upsert=False)
+
+
+def getSeries(matchID):
+    series = myDB['matches'].find_one({"_id": matchID})
+    playerCollection = myDB['players']
+    df = pd.DataFrame(columns=['Player', 'Game number', 'Team', 'Team Goals', 'Score', 'Goals',
+                               'Assists', 'Shots', 'Saves'])
+    index = 0
+    gamesNumber = len(series['team1_goals'])
+    for game in range(gamesNumber):
+        for player in range(1, 7):
+            currentTeam = 'team1' if player < 4 else 'team2'
+            currentPlayer = playerCollection.find_one(
+                {'_id': series['player'+str(player)+'_id']})['name']
+            df.loc[index] = (currentPlayer, game+1,
+                             series[currentTeam]['name'], series[currentTeam+'_goals'][game], series['player'+str(player)+'_score'][game], series['player'+str(player)+'_goals'][game], series['player'+str(player)+'_assists'][game], series['player'+str(player)+'_shots'][game], series['player'+str(player)+'_saves'][game])
+            index += 1
+    return series['date'], df

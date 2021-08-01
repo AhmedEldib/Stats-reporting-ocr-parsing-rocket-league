@@ -64,8 +64,8 @@ async def parse_replay(ctx, *args):
     try:
         replay = functions.download_replay(link)
         blue, orange = functions.parse_replay(replay)
-        await ctx.channel.send("Blue Team \n" + "``` " + blue.to_string(index=False) + " ``` \n" + "Orange Team \n" 
-                                + "``` " + orange.to_string(index=False) + " ```")
+        await ctx.channel.send("Blue Team \n" + "``` " + blue.to_string(index=False) + " ``` \n" + "Orange Team \n"
+                               + "``` " + orange.to_string(index=False) + " ```")
 
     except:
         print('not a valid replay')
@@ -120,7 +120,7 @@ async def add_player(ctx, *args):
 async def add_team(ctx, *args):
     try:
         db.insertTeam(args[0], re.sub(r'[<@!>]', '', args[1]), re.sub(
-            r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]),re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
+            r'[<@!>]', '', args[2]), re.sub(r'[<@!>]', '', args[3]), re.sub(r'[<@!>]', '', args[4]) if len(args) == 5 else None)
         await ctx.channel.send(args[0]+" is now a team")
     except DuplicateKeyError:
         await ctx.channel.send("Team name is already taken or members in this team already have a team")
@@ -137,8 +137,8 @@ async def add_match(ctx, *args):
         team2 = {'name': args[4], 'who': [args[5], args[6], args[7]]}
         matchID = db.insertMatch(args[8], args[9], team1, team2)
     else:
-        team1 = {'name': args[0], 'who': ['captain','player2','player3']}
-        team2 = {'name': args[1], 'who': ['captain','player2','player3']}
+        team1 = {'name': args[0], 'who': ['captain', 'player2', 'player3']}
+        team2 = {'name': args[1], 'who': ['captain', 'player2', 'player3']}
         matchID = db.insertMatch(args[2], args[3], team1, team2)
     await ctx.channel.send("Match is created with ID:"+str(matchID))
 
@@ -158,9 +158,29 @@ async def get_result(ctx, *args):
 #######################################################################
 @client.command(name='stats')
 async def stats(ctx, *args):
-    players,teams,matches = db.exctractDataFrames()
+    players, teams, matches = db.exctractDataFrames()
     players.to_csv('players.csv')
     teams.to_csv('teams.csv')
     matches.to_csv('matches.csv')
-
+#######################################################################
+@client.command(name='pop')
+async def stats(ctx, *args):
+    db.removeLastReplay(args[0])
+#######################################################################
+@client.command(name='commit')
+async def stats(ctx, *args):
+    db.commitSeries(args[0])
+#######################################################################
+@client.command(name='uncommit')
+async def stats(ctx, *args):
+    db.uncommitSeries(args[0])
+#######################################################################
+@client.command(name='view')
+async def stats(ctx, *args):
+    date, df = db.getSeries(args[0])
+    teams = list(df['Team'].unique())
+    await ctx.channel.send('Series: '+str(teams[0]) + ' vs ' + str(teams[1]) + ' on: ' + str(date.day) + '/' + str(date.month) + ' ' + str(date.hour) + ':' + str(date.minute))
+    for match in df['Game number'].unique():
+        await ctx.channel.send('Match #'+str(match))
+        await ctx.channel.send("```" + df[df['Game number'] == match].drop('Game number', axis=1).set_index('Player').to_string() + "```")
 #######################################################################
