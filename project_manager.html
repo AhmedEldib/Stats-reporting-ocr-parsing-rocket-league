@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module project_manager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>project_manager</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cdell%5Cdesktop%5Cscore-reporting-ocr-rocket-league%5Cproject_manager.py">c:\users\dell\desktop\score-reporting-ocr-rocket-league\project_manager.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="asyncio.html">asyncio</a><br>
+<a href="db_utils.html">db_utils</a><br>
+</td><td width="25%" valign=top><a href="functions.html">functions</a><br>
+<a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt>async <a name="-add_player"><strong>add_player</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;multiple&nbsp;arguments&nbsp;to&nbsp;create&nbsp;a&nbsp;new&nbsp;player&nbsp;document&nbsp;in&nbsp;the&nbsp;database<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;add&nbsp;yourself&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;player&nbsp;&lt;name&gt;&nbsp;&lt;mobile_number&gt;&nbsp;&lt;rank&nbsp;(tier)&gt;&nbsp;&lt;rocket_id&gt;&nbsp;&lt;tracker_link&gt;<br>
+to&nbsp;add&nbsp;another&nbsp;person&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;player&nbsp;&lt;discord_id&nbsp;(mention)&gt;&nbsp;&lt;name&gt;&nbsp;&lt;mobile_number&gt;&nbsp;&lt;rank&nbsp;(tier)&gt;&nbsp;&lt;rocket_id&gt;&nbsp;&lt;tracker_link&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;discord&nbsp;id&nbsp;of&nbsp;the&nbsp;player&nbsp;(optional&nbsp;to&nbsp;add&nbsp;someone&nbsp;else),&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;name&nbsp;of&nbsp;the&nbsp;player&nbsp;in&nbsp;game,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;mobile&nbsp;number&nbsp;(Egypt),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;tier&nbsp;of&nbsp;the&nbsp;player&nbsp;-&gt;&nbsp;1&nbsp;=&nbsp;captain,&nbsp;2&nbsp;=&nbsp;second&nbsp;tier,&nbsp;3&nbsp;=&nbsp;third&nbsp;tier,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5:&nbsp;in&nbsp;game&nbsp;rocket&nbsp;id<br>
+&nbsp;&nbsp;&nbsp;&nbsp;6:&nbsp;rocket&nbsp;league&nbsp;tracker&nbsp;network&nbsp;profile&nbsp;link<br>
+&nbsp;<br>
+Raises<br>
+------<br>
+There&nbsp;are&nbsp;still&nbsp;missing&nbsp;arguments.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;passed&nbsp;arguments&nbsp;are&nbsp;missing&nbsp;some&nbsp;enteries<br>
+Player&nbsp;already&nbsp;registered<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;discord&nbsp;id&nbsp;passed&nbsp;is&nbsp;already&nbsp;in&nbsp;the&nbsp;database</tt></dd></dl>
+ <dl><dt>async <a name="-add_result"><strong>add_result</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;series&nbsp;id&nbsp;and&nbsp;match&nbsp;replay&nbsp;to&nbsp;append&nbsp;its&nbsp;stats&nbsp;to&nbsp;the&nbsp;series<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;add&nbsp;a&nbsp;new&nbsp;match&nbsp;to&nbsp;the&nbsp;series&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;result&nbsp;&lt;series&nbsp;id&gt;&nbsp;&lt;replay&nbsp;link&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;id&nbsp;of&nbsp;the&nbsp;series&nbsp;that&nbsp;was&nbsp;created,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;replay&nbsp;link<br>
+&nbsp;<br>
+Raises<br>
+------<br>
+not&nbsp;a&nbsp;valid&nbsp;replay<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;replay&nbsp;link&nbsp;couldn't&nbsp;be&nbsp;downloaded&nbsp;or&nbsp;not&nbsp;a&nbsp;replay&nbsp;or&nbsp;it&nbsp;is&nbsp;corrupted</tt></dd></dl>
+ <dl><dt>async <a name="-add_team"><strong>add_team</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;multiple&nbsp;arguments&nbsp;to&nbsp;create&nbsp;a&nbsp;new&nbsp;team&nbsp;along&nbsp;with&nbsp;its&nbsp;players&nbsp;who&nbsp;are&nbsp;already&nbsp;in&nbsp;the&nbsp;database<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;create&nbsp;a&nbsp;team&nbsp;with&nbsp;only&nbsp;1&nbsp;player&nbsp;(captain)&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;team&nbsp;&lt;team&nbsp;name&gt;&nbsp;&lt;captain&nbsp;mention&gt;&nbsp;<br>
+to&nbsp;create&nbsp;a&nbsp;team&nbsp;with&nbsp;only&nbsp;multiple&nbsp;players&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;team&nbsp;&lt;team&nbsp;name&gt;&nbsp;&lt;captain&nbsp;mention&gt;&nbsp;&lt;tier&nbsp;2&nbsp;player&gt;&nbsp;&lt;tier&nbsp;3&nbsp;player&nbsp;(optional)&gt;&nbsp;&lt;sub&nbsp;player&nbsp;(optional)&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;team&nbsp;name,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;captain&nbsp;discord&nbsp;id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;second&nbsp;tier&nbsp;player&nbsp;discord&nbsp;id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;4:&nbsp;third&nbsp;tier&nbsp;player&nbsp;discord&nbsp;id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;5:&nbsp;sub&nbsp;player&nbsp;discord&nbsp;id<br>
+&nbsp;<br>
+Raises<br>
+------<br>
+Team&nbsp;name&nbsp;is&nbsp;already&nbsp;taken&nbsp;or&nbsp;members&nbsp;in&nbsp;this&nbsp;team&nbsp;already&nbsp;have&nbsp;a&nbsp;team.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;the&nbsp;passed&nbsp;team&nbsp;name&nbsp;is&nbsp;already&nbsp;taken&nbsp;or&nbsp;the&nbsp;players&nbsp;are&nbsp;in&nbsp;other&nbsp;teams</tt></dd></dl>
+ <dl><dt>async <a name="-create_series"><strong>create_series</strong></a>(ctx, *args)</dt><dd><tt>#@client.command(name='series')</tt></dd></dl>
+ <dl><dt>async <a name="-get_series"><strong>get_series</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;series&nbsp;id&nbsp;and&nbsp;returns&nbsp;it&nbsp;in&nbsp;the&nbsp;channel<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;get&nbsp;series&nbsp;data:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;view&nbsp;&lt;series&nbsp;id&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;of&nbsp;the&nbsp;series&nbsp;that&nbsp;was&nbsp;created<br>
+&nbsp;<br>
+Raises<br>
+------</tt></dd></dl>
+ <dl><dt>async <a name="-join_team"><strong>join_team</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;team&nbsp;name&nbsp;and&nbsp;new&nbsp;player&nbsp;with&nbsp;their&nbsp;role&nbsp;to&nbsp;join&nbsp;a&nbsp;team<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;add&nbsp;a&nbsp;new&nbsp;player&nbsp;to&nbsp;the&nbsp;team&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;join&nbsp;&lt;team&nbsp;name&gt;&nbsp;&lt;player&nbsp;mention&gt;&nbsp;&lt;role&gt;&nbsp;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;team&nbsp;name,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;player&nbsp;discord&nbsp;id,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3:&nbsp;role&nbsp;-&gt;&nbsp;captain&nbsp;=&nbsp;tier&nbsp;1,&nbsp;player2&nbsp;=&nbsp;tier&nbsp;2,&nbsp;player3&nbsp;=&nbsp;tier&nbsp;3,&nbsp;sub&nbsp;=&nbsp;sub&nbsp;player<br>
+&nbsp;<br>
+Raises<br>
+------</tt></dd></dl>
+ <dl><dt>async <a name="-kick_from_team"><strong>kick_from_team</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;team&nbsp;name&nbsp;and&nbsp;a&nbsp;player&nbsp;id&nbsp;to&nbsp;kick&nbsp;them&nbsp;from&nbsp;the&nbsp;team<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;kick&nbsp;a&nbsp;player&nbsp;from&nbsp;the&nbsp;team&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;kick&nbsp;&lt;team&nbsp;name&gt;&nbsp;&lt;player&nbsp;mention&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;array<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1:&nbsp;team&nbsp;name,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2:&nbsp;player&nbsp;discord&nbsp;id<br>
+&nbsp;<br>
+Raises<br>
+------</tt></dd></dl>
+ <dl><dt>async <a name="-parse_replay"><strong>parse_replay</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;a&nbsp;replay&nbsp;link&nbsp;and&nbsp;returns&nbsp;the&nbsp;match&nbsp;properties&nbsp;after&nbsp;parsing&nbsp;it<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+;replay&nbsp;&lt;link&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;replay&nbsp;link&nbsp;<br>
+&nbsp;<br>
+Raises<br>
+------<br>
+Command&nbsp;missing&nbsp;the&nbsp;link&nbsp;or&nbsp;the&nbsp;Game&nbsp;ID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;no&nbsp;link&nbsp;is&nbsp;in&nbsp;the&nbsp;command<br>
+not&nbsp;a&nbsp;valid&nbsp;replay<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;the&nbsp;replay&nbsp;link&nbsp;couldn't&nbsp;be&nbsp;downloaded&nbsp;or&nbsp;not&nbsp;a&nbsp;replay&nbsp;or&nbsp;it&nbsp;is&nbsp;corrupted</tt></dd></dl>
+ <dl><dt>async <a name="-remove_match"><strong>remove_match</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;series&nbsp;id&nbsp;and&nbsp;remove&nbsp;last&nbsp;added&nbsp;match<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;remove&nbsp;last&nbsp;match&nbsp;from&nbsp;the&nbsp;series&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;result&nbsp;&lt;series&nbsp;id&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;of&nbsp;the&nbsp;series&nbsp;that&nbsp;was&nbsp;created,&nbsp;<br>
+&nbsp;<br>
+Raises<br>
+------<br>
+series&nbsp;is&nbsp;already&nbsp;empty<br>
+&nbsp;&nbsp;&nbsp;&nbsp;happens&nbsp;when&nbsp;trying&nbsp;to&nbsp;pop&nbsp;a&nbsp;series&nbsp;that&nbsp;has&nbsp;no&nbsp;matches</tt></dd></dl>
+ <dl><dt>async <a name="-reset_player_stats"><strong>reset_player_stats</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;series&nbsp;id&nbsp;and&nbsp;removes&nbsp;their&nbsp;stats&nbsp;from&nbsp;the&nbsp;players<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;reset&nbsp;stats&nbsp;of&nbsp;players&nbsp;before&nbsp;a&nbsp;certain&nbsp;series:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;uncommit&nbsp;&lt;series&nbsp;id&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;of&nbsp;the&nbsp;series&nbsp;that&nbsp;was&nbsp;created<br>
+&nbsp;<br>
+Raises<br>
+------</tt></dd></dl>
+ <dl><dt>async <a name="-stats"><strong>stats</strong></a>(ctx, *args)</dt><dd><tt>#@client.command(name='stats')</tt></dd></dl>
+ <dl><dt>async <a name="-update_player_stats"><strong>update_player_stats</strong></a>(ctx, *args)</dt><dd><tt>Takes&nbsp;series&nbsp;id&nbsp;and&nbsp;commits&nbsp;their&nbsp;stats&nbsp;to&nbsp;the&nbsp;players<br>
+&nbsp;<br>
+Command<br>
+----------<br>
+to&nbsp;update&nbsp;players&nbsp;stats&nbsp;with&nbsp;the&nbsp;new&nbsp;series&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;;commit&nbsp;&lt;series&nbsp;id&gt;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+*args&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;of&nbsp;the&nbsp;series&nbsp;that&nbsp;was&nbsp;created<br>
+&nbsp;<br>
+Raises<br>
+------</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>client</strong> = &lt;discord.ext.commands.bot.Bot object&gt;</td></tr></table>
+</body></html>

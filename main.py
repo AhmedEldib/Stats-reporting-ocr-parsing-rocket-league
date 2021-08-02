@@ -23,6 +23,9 @@ async def on_ready():
 
 #######################################################################
 
-#db.initializeDB()
-#db.insertResult("60f19dd5597abc3621cc7aed", None, None)
-client.run(json.load(open("bot_creds.json"))["bot"])
+
+if __name__ == "__main__":
+    #db.initializeDB()
+    #db.insertResult("60f19dd5597abc3621cc7aed", None, None)
+    client.run(json.load(open("bot_creds.json"))["bot"])
+
