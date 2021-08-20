@@ -35,7 +35,7 @@ def initializeDB():
 
 def insertNewPlayer(discord_id, name, mobile_number, rank, rocket_id, tracker_link="", 
                     online_id='$', total_score=0, total_games=0, total_goals=0, total_assists=0, total_saves=0, total_shots=0):
-    doc = {'_id': discord_id, 'name': name, 'mobile_number': mobile_number, 'rank': int(rank),
+    doc = {'_id': discord_id, 'name': name, 'mobile_number': mobile_number, 'rank': float(rank),
            'rocket_id': rocket_id, 'tracker_link': tracker_link, 'online_id': online_id, 'total_score': total_score,
            'total_games': total_games, 'total_goals': total_goals, 'total_assists': total_assists, 'total_saves': total_saves, 'total_shots': total_shots}
 
